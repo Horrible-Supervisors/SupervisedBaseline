@@ -25,12 +25,12 @@ def load_ds(path_to_train, path_to_valid):
         transforms.ToTensor()
         # transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
     ])
-    train_dataset = torchvision.datasets.CIFAR10(
+    train_dataset = torchvision.datasets.ImageFolder(
         root=path_to_train, 
         transform=transform,
         download=True
     )
-    valid_dataset = torchvision.datasets.CIFAR10(
+    valid_dataset = torchvision.datasets.ImageFolder(
         root=path_to_valid,
         transform=transform,
         download=True
@@ -41,6 +41,7 @@ def load_ds(path_to_train, path_to_valid):
 def train_model(model, train, valid):
     model = torch.nn.DataParallel(model)
     model = model.to(device)
+    print("Training on " + device.type)
 
     criterion = torch.nn.CrossEntropyLoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
